@@ -1,0 +1,18 @@
+{
+  "name": "next-workshop",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "spa:dev": "npm -w react-spa run dev",
+    "mock-api": "npm -w mock-api start"
+  },
+  "workspaces": [
+    "react-spa",
+    "mock-api",
+    "types"
+  ],
+  "devDependencies": {
+    "prettier": "^3.2.4"
+  }
+}

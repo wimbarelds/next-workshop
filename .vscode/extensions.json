@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "ms-vscode-remote.vscode-remote-extensionpack",
+    "alexdima.copy-relative-path",
+    "esbenp.prettier-vscode",
+    "styled-components.vscode-styled-components",
+    "rohit-gohri.format-code-action",
+    "mrorz.language-gettext",
+    "ms-azuretools.vscode-docker",
+    "eamodio.gitlens",
+    "codeandstuff.package-json-upgrade",
+    "bradlc.vscode-tailwindcss"
+  ]
+}
