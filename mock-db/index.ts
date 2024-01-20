@@ -74,6 +74,12 @@ export default class MockDB {
     let results = this.data[table];
     if (!results) throw new Error('Table does not exist');
 
+    // sort by date desc
+    results.sort((a, b) => {
+      if (!('date' in a) || !('date' in b)) return 0;
+      return b.date.localeCompare(a.date);
+    });
+
     // filter items
     for (const [key, value] of Object.entries(filter ?? {})) {
       results = results?.filter((item) => item[key] === value);
