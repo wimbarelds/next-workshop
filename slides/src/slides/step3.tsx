@@ -1,7 +1,7 @@
-export function Slide4() {
+export function Step3() {
   return (
     <div className="prose prose-invert prose-2xl">
-      <h1>What is CSR, What is SSR</h1>
+      <h1>Route Handler</h1>
     </div>
   );
 }

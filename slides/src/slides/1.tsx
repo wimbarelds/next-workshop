@@ -1,3 +1,3 @@
 export function Slide1() {
-  return <div>Slide 1</div>
+  return <p className="mb-12 text-5xl font-bold text-center">Who am I?</p>
 }

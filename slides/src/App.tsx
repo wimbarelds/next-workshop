@@ -4,8 +4,36 @@ import { Slide2 } from './slides/2';
 import { Slide3 } from './slides/3';
 import { Slide4 } from './slides/4';
 import { Slide5 } from './slides/5';
+import { Slide6 } from './slides/6';
+import { Slide7 } from './slides/7';
+import { Slide8 } from './slides/8';
+import { Slide9 } from './slides/9';
+import { Step1 } from './slides/step1';
+import { Step2 } from './slides/step2';
+import { Step3 } from './slides/step3';
+import { Step4 } from './slides/step4';
+import { Step5 } from './slides/step5';
+import { Step6 } from './slides/step6';
+import { Step7 } from './slides/step7';
 
-const slides = [Slide1, Slide2, Slide3, Slide4, Slide5];
+const slides = [
+  Slide1,
+  Slide2,
+  Slide3,
+  Slide4,
+  Slide5,
+  Slide6,
+  Slide7,
+  Slide8,
+  Slide9,
+  Step1,
+  Step2,
+  Step3,
+  Step4,
+  Step5,
+  Step6,
+  Step7
+];
 
 function App() {
   const [slide, setSlide] = useState(0);
