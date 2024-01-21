@@ -1,6 +1,7 @@
 import { createHash } from './util/createHash';
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
+import axios from 'axios';
 
 type AuthFn = (username: string, passwordHash: string) => boolean;
 type Data = Record<string, Array<Record<string, any>>>;
@@ -18,6 +19,7 @@ function getFieldsOfItem(item: Record<string, any>, fields?: string[] | null) {
 }
 
 export default class MockDB {
+  private webhookUrl = '';
   private data: Data = {};
 
   private get serverPath() {
@@ -109,10 +111,16 @@ export default class MockDB {
     await doQueryDelay();
     if (!(table in this.data)) throw new Error('Table does not exist');
 
-    this.data[table]?.push({
+    const fullValue = {
       ...value,
       id: value.id ?? Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(36),
-    });
+    };
+
+    this.data[table]?.push(fullValue);
+
+    if (this.webhookUrl) {
+      axios.post(this.webhookUrl, { type: 'add', table, id: fullValue.id });
+    }
   }
 
   public async updateItem(table: string, value: Record<string, any>) {
@@ -128,6 +136,10 @@ export default class MockDB {
       throw new Error(`Item with id '${value.id}' not found in table '${table}'`);
 
     results.splice(resultIndex, 1, value);
+
+    if (this.webhookUrl) {
+      axios.post(this.webhookUrl, { type: 'update', table, id: value.id });
+    }
   }
 
   public async deleteItem(table: string, id: string) {
@@ -140,15 +152,14 @@ export default class MockDB {
     if (resultIndex === -1) throw new Error(`Item with id '${id}' not found in table '${table}'`);
 
     results.splice(resultIndex, 1);
+
+    if (this.webhookUrl) {
+      axios.post(this.webhookUrl, { type: 'delete', table, id });
+    }
   }
 
-  public writeItem(table: string, value: Record<string, any>) {
-    const tablePath = resolve(this.serverPath, table);
-    if (!statSync(tablePath).isDirectory()) return;
-
-    let id = value.id ?? Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(36);
-    const filepath = resolve(tablePath, `${id}.json`);
-    writeFileSync(filepath, JSON.stringify(value, null, '  '), 'utf8');
+  public setWebhookUrl(url: string) {
+    this.webhookUrl = url;
   }
 }
 
