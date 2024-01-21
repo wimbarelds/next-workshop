@@ -12,7 +12,9 @@
     "*.css": "tailwindcss"
   },
   "eslint.workingDirectories": [
+    { "directory": "mock-db", "changeProcessCWD": true },
     { "directory": "mock-api", "changeProcessCWD": true },
     { "directory": "react-spa", "changeProcessCWD": true },
+    { "directory": "nextjs-site", "changeProcessCWD": true },
   ]
 }

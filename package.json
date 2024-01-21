@@ -4,16 +4,20 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "mock-api": "npm -w mock-api start",
     "spa:dev": "npm -w react-spa run dev",
-    "mock-api": "npm -w mock-api start"
+    "nextjs:dev": "npm -w nextjs-site run dev",
+    "slides": "npm run -w slides dev"
   },
   "workspaces": [
     "react-spa",
     "mock-api",
     "mock-db",
+    "nextjs-site",
+    "slides",
     "types"
   ],
   "devDependencies": {
-    "prettier": "^3.2.4"
+    "prettier": "3.2.4"
   }
 }

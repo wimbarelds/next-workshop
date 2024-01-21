@@ -6,11 +6,14 @@ Before we dig into the website: All content on this website / in this repository
 
 ## Project Structure
 
-Originally there will be three workspaces:
+There are six workspaces:
 
 1. `mock-db`, this is a mock database system. This workspace is used as a module and does not need to be run.
 2. `mock-api`, this is a REST API server, using `mock-db` as its datasource. This does need to be run.
-3. `react-spa`, this is the React frontend application, it fetches data from the REST API.
+3. `react-spa`, this is the React SPA frontend application, it fetches data from the REST API.
+4. `nextjs-site`, this is an empty/clean NextJS project that we will rebuild our website into.
+5. `slides`, the slides to accompany this workshop
+6. `types`, just a few typescript interfaces that can be used across different workspaces
 
 ## `npm run` commands
 
@@ -19,3 +22,5 @@ To run the website, you will need to execute the following commands:
 1. `npm install` or `npm ci`
 2. `npm run mock-api` (keep this terminal open)
 3. `npm run spa:dev` (in a second terminal window)
+4. `npm run nextjs:dev` (when we get to it)
+4. `slides` (To open the slides on your own computer)
