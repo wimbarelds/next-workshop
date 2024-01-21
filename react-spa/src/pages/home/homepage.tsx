@@ -23,6 +23,10 @@ export function HomePage() {
   const adRef = useRef(ads[Math.floor(Math.random() * ads.length)]);
 
   useEffect(() => {
+    document.title = `Pentastic! - Home`;
+  }, []);
+
+  useEffect(() => {
     setLoading(true);
 
     Promise.all([

@@ -15,6 +15,10 @@ export function PenOverview() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    document.title = `Pentastic! - Pens overview`;
+  }, []);
+
   return (
     <div className="container mx-auto px-4">
       <div className="overflow-hidden">

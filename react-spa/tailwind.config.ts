@@ -12,19 +12,16 @@ const config: Config = {
         // Generic colors
         inherit: 'inherit',
         current: 'currentColor',
-        transparent: colors.transparent,
         gray: colors.slate,
-        black: colors.black,
-        white: colors.white,
-        // state
-        success: colors.green,
-        error: colors.red,
-        warn: colors.yellow,
-        info: colors.sky,
-        // brand
-        brand: colors.orange,
-        primary: colors.orange,
-        accent: colors.cyan,
+      },
+      animation: {
+        fade: 'fadeIn .3s ease-in-out',
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
       },
     },
   },

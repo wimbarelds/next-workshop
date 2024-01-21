@@ -31,6 +31,16 @@ export function WikiPage() {
       .finally(() => setLoading(false));
   }, [slug]);
 
+  useEffect(() => {
+    if (!content?.slug) return;
+    const title = content.slug
+      .split('-')
+      .map((word, index) => (index > 0 ? word : word[0].toUpperCase() + word.slice(1)))
+      .join(' ');
+
+    document.title = `Pentastic! - Wiki: ${title}`;
+  }, [content?.slug]);
+
   if (loading) return <div className="text-center">Loading...</div>;
   if (!content) return <div className="text-center">No post found.</div>;
 

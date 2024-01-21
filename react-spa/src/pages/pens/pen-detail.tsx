@@ -28,6 +28,10 @@ export function PenDetail() {
       .finally(() => setLoading(false));
   }, [id]);
 
+  useEffect(() => {
+    if (post?.title) document.title = `Pentastic! - ${post.title}`;
+  }, [post]);
+
   useEffect(loadContent, [loadContent]);
 
   if (loading && !post) return <div className="text-center">Loading...</div>;
