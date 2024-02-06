@@ -1,8 +1,5 @@
-'use client';
-
+import { Metadata } from 'next';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-
 import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -20,29 +17,30 @@ const components: Components = {
 
 const baseUrl = `http://localhost:1234/wiki`;
 
-export default function Page({ params: { slug } }: { params: { slug: string } }) {
-  const [content, setContent] = useState<WikiPage | null>(null);
-  const [loading, setLoading] = useState(false);
+export async function generateMetadata({
+  params: { slug },
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const content: WikiPage = await fetch(slug ? `${baseUrl}/${slug}` : baseUrl).then((response) =>
+    response.json(),
+  );
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(slug ? `${baseUrl}/${slug}` : baseUrl)
-      .then((response) => response.json())
-      .then((data: WikiPage) => setContent(data))
-      .finally(() => setLoading(false));
-  }, [slug]);
+  const title = content.slug
+    .split('-')
+    .map((word, index) => (index > 0 ? word : word[0].toUpperCase() + word.slice(1)))
+    .join(' ');
 
-  useEffect(() => {
-    if (!content?.slug) return;
-    const title = content.slug
-      .split('-')
-      .map((word, index) => (index > 0 ? word : word[0].toUpperCase() + word.slice(1)))
-      .join(' ');
+  return {
+    title: `Pentastic! - Wiki: ${title}`,
+  };
+}
 
-    document.title = `Pentastic! - Wiki: ${title}`;
-  }, [content?.slug]);
+export default async function Page({ params: { slug } }: { params: { slug: string } }) {
+  const content: WikiPage = await fetch(slug ? `${baseUrl}/${slug}` : baseUrl).then((response) =>
+    response.json(),
+  );
 
-  if (loading) return <div className="text-center">Loading...</div>;
   if (!content) return <div className="text-center">No post found.</div>;
 
   return (
