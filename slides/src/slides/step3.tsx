@@ -1,17 +1,17 @@
+import Code from '../components/Code';
+import { MarkDown } from '../components/Markdown';
+import content from '../snippets/step3.md?raw';
+import structureCode from '../snippets/step3structure?raw';
+import clientCode from '../snippets/step3client-fetch?raw';
+import serverCode from '../snippets/step3server-fetch?raw';
+
 export function Step3() {
   return (
-    <div className="prose prose-invert prose-2xl">
-      <h1>Server Components</h1>
-      <ul>
-        <li>
-          https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating
-        </li>
-        <li>Server Components, Client Components, Components</li>
-        <li>Server components can use client components in JSX</li>
-        <li>Client components cannot use server components in JSX</li>
-        <li>Client components _CAN_ be passed "server components" a children</li>
-        <li>Nesting</li>
-      </ul>
-    </div>
+    <>
+      <MarkDown content={content} />
+      <Code code={structureCode} title="Structure examples" />
+      <Code code={clientCode} title="Client component data fetching" />
+      <Code code={serverCode} title="Server component data fetching" />
+    </>
   );
 }
