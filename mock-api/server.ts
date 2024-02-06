@@ -14,6 +14,7 @@ const dbPromise = MockDB.connect('localhost', 'admin', 'Hunter2');
 
 app.get('/blog/posts', async (req: Request, res: Response) => {
   const db = await dbPromise;
+  if (db instanceof Error) return res.status(500).json({ message: db.message });
   res.json(
     await db.getList('blog', {}, ['id', 'author', 'title', 'date', 'shortDescription', 'tags']),
   );
@@ -24,6 +25,7 @@ app.get('/blog/:id', async (req: Request, res: Response) => {
   if (!postId) return res.status(404).send('id missing');
 
   const db = await dbPromise;
+  if (db instanceof Error) return res.status(500).json({ message: db.message });
 
   const [baseItem, comments] = await Promise.all([
     db.getItem('blog', postId),
@@ -44,12 +46,14 @@ app.post(`/blog/:id`, async (req: Request, res: Response) => {
   };
 
   const db = await dbPromise;
+  if (db instanceof Error) return res.status(500).json({ message: db.message });
   await db.addItem('comment', commentObj);
   res.status(200).send('Comment added');
 });
 
 app.get('/pens/posts', async (req: Request, res: Response) => {
   const db = await dbPromise;
+  if (db instanceof Error) return res.status(500).json({ message: db.message });
   res.json(
     await db.getList('pen', {}, ['id', 'author', 'title', 'date', 'shortDescription', 'tags']),
   );
@@ -60,6 +64,7 @@ app.get('/pens/:id', async (req: Request, res: Response) => {
   if (!postId) return res.status(404).send('id missing');
 
   const db = await dbPromise;
+  if (db instanceof Error) return res.status(500).json({ message: db.message });
 
   const [baseItem, comments] = await Promise.all([
     db.getItem('pen', postId),
@@ -80,12 +85,14 @@ app.post(`/pens/:id`, async (req: Request, res: Response) => {
   };
 
   const db = await dbPromise;
+  if (db instanceof Error) return res.status(500).json({ message: db.message });
   await db.addItem('comment', commentObj);
   res.status(200).send('Comment added');
 });
 
 app.get('/wiki', async (req: Request, res: Response) => {
   const db = await dbPromise;
+  if (db instanceof Error) return res.status(500).json({ message: db.message });
 
   return res.json(await db.getItem('wiki', 'home'));
 });
@@ -93,6 +100,7 @@ app.get('/wiki', async (req: Request, res: Response) => {
 app.get('/wiki/:slug', async (req: Request, res: Response) => {
   const slug = req.params.slug as string;
   const db = await dbPromise;
+  if (db instanceof Error) return res.status(500).json({ message: db.message });
 
   return res.json(await db.getItem('wiki', slug));
 });
