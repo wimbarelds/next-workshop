@@ -1,9 +1,8 @@
-import { createHash } from './util/createHash';
-import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs';
+import { createHash } from './util/createHash.ts';
+import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { resolve } from 'path';
 import axios from 'axios';
 
-type AuthFn = (username: string, passwordHash: string) => boolean;
 type Data = Record<string, Array<Record<string, any>>>;
 
 const queryDelay = 100;
@@ -18,6 +17,13 @@ function getFieldsOfItem(item: Record<string, any>, fields?: string[] | null) {
   return result;
 }
 
+function getRootDir() {
+  if (import.meta.dirname.includes('nextjs-site')) {
+    return resolve(process.cwd(), '../mock-db');
+  }
+  return import.meta.dirname;
+}
+
 export default class MockDB {
   private webhookUrl = '';
   private data: Data = {};
@@ -27,7 +33,7 @@ export default class MockDB {
   }
 
   private static getServerPath(serverHash: string) {
-    return resolve(__dirname, 'servers', serverHash);
+    return resolve(getRootDir(), 'servers', serverHash);
   }
 
   /**
@@ -55,11 +61,12 @@ export default class MockDB {
   public static async connect(hostname: string, username: string, password: string) {
     const serverHash = createHash(hostname);
     const serverPath = MockDB.getServerPath(serverHash);
-    const authCheckPath = resolve(serverPath, 'authCheck.ts');
+    const authCheckPath = resolve(serverPath, 'authCheck.json');
     if (!existsSync(authCheckPath)) return new Error(`Cannot connect to ${hostname}`);
 
-    const authFn = await import(authCheckPath).then((module): AuthFn => module.default);
-    if (typeof authFn !== 'function' || !authFn(username, createHash(password))) {
+    const authJson = readFileSync(authCheckPath, 'utf-8');
+    const authObj = JSON.parse(authJson);
+    if (authObj.username !== username || authObj.passwordHash !== createHash(password)) {
       return new Error(`Cannot connect to ${hostname}`);
     }
 
@@ -162,5 +169,3 @@ export default class MockDB {
     this.webhookUrl = url;
   }
 }
-
-module.exports = MockDB;
