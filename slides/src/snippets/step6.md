@@ -11,3 +11,11 @@ This function is located alongside our page components with dynamic routes, and 
 ## Resources
 
 - https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes#generating-static-params
+
+## Testing?
+
+You can test whether everything is being prerendered correctly running the following command:
+
+```
+npm -w nextjs-site run build
+```
