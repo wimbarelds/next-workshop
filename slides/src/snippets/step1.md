@@ -10,6 +10,7 @@ This will include the following steps:
 2. Transferring the index.html to the layout component
 3. Moving the SPA layout to the Next app (use `next/link` and `href` for navigation)
 4. Copy home component to the root page.tsx
+5. Add `'use client'` (temporary)
 
 ## Relevant resources
 

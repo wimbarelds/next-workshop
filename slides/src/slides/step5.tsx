@@ -1,7 +1,8 @@
 export function Step5() {
   return (
     <div className="prose prose-invert prose-2xl">
-      <h1>Cache Invalidation</h1>
+      <h1>Server Function</h1>
+      stop using mock-api, use mock-db
     </div>
   );
 }
