@@ -20,7 +20,7 @@ export default function Page() {
     // It will send the data to the API
     setStatus('sending');
     setErrors([]);
-    fetch('http://localhost:1234/api/email', {
+    fetch('/contact/api', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
