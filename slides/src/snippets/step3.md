@@ -4,6 +4,10 @@ In this step we're going to get rid of (some of) the `'use client'` that we've b
 
 That means turning what components we can from client components to server components.
 
+- The easy ones: Home, PenOverview, Wiki
+- More challenging ones: Blog Detail, Pen Detail
+- We're leaving the contact page as is for now
+
 But what are server components and client components?
 
 ## A client component:
