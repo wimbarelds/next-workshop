@@ -20,13 +20,13 @@ const components: Components = {
 
 const baseUrl = `http://localhost:1234/wiki`;
 
-export default function Page({ params: { slug } }: { params: { slug: string } }) {
+export default function Page({ params: { slug } }: { params: { slug: string[] } }) {
   const [content, setContent] = useState<WikiPage | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    fetch(slug ? `${baseUrl}/${slug}` : baseUrl)
+    fetch(slug[0] ? `${baseUrl}/${slug[0]}` : baseUrl)
       .then((response) => response.json())
       .then((data: WikiPage) => setContent(data))
       .finally(() => setLoading(false));
