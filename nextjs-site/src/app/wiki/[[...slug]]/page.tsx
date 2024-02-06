@@ -17,9 +17,9 @@ const components: Components = {
 export async function generateMetadata({
   params: { slug },
 }: {
-  params: { slug: string };
+  params: { slug: string[] };
 }): Promise<Metadata> {
-  const content = await getWiki(slug);
+  const content = await getWiki(slug[0]);
   const title = content.slug
     .split('-')
     .map((word, index) => (index > 0 ? word : word[0].toUpperCase() + word.slice(1)))
@@ -30,8 +30,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params: { slug } }: { params: { slug: string } }) {
-  const content = await getWiki(slug);
+export default async function Page({ params: { slug } }: { params: { slug: string[] } }) {
+  const content = await getWiki(slug[0]);
 
   if (!content) return <div className="text-center">No post found.</div>;
 
