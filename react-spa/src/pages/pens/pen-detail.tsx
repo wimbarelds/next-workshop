@@ -42,14 +42,14 @@ export default function PenDetail() {
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="lg:w-[200px] flex justify-center items-start">
           <div className="text-vertical flex rotate-180 items-center gap-8 text-nowrap py-8">
-            <p>
+            <div>
               <div className="text-gray-400">Posted:</div>
               <div className="text-lg py-4">{getPenDate(post)}</div>
-            </p>
-            <p>
+            </div>
+            <div>
               <div className="text-gray-400">Author:</div>
               <div className="text-3xl py-4">{post.author}</div>
-            </p>
+            </div>
           </div>
         </div>
         <div className="flex-1">

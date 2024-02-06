@@ -56,11 +56,11 @@ export default class MockDB {
     const serverHash = createHash(hostname);
     const serverPath = MockDB.getServerPath(serverHash);
     const authCheckPath = resolve(serverPath, 'authCheck.ts');
-    if (!existsSync(authCheckPath)) throw new Error(`Cannot coonect to ${hostname}`);
+    if (!existsSync(authCheckPath)) return new Error(`Cannot connect to ${hostname}`);
 
     const authFn = await import(authCheckPath).then((module): AuthFn => module.default);
     if (typeof authFn !== 'function' || !authFn(username, createHash(password))) {
-      throw new Error(`Cannot coonect to ${hostname}`);
+      return new Error(`Cannot connect to ${hostname}`);
     }
 
     return new MockDB(serverHash);
@@ -74,7 +74,7 @@ export default class MockDB {
   ) {
     await doQueryDelay();
     let results = this.data[table];
-    if (!results) throw new Error('Table does not exist');
+    if (!results) return new Error('Table does not exist');
 
     // sort by date desc
     results.sort((a, b) => {
@@ -99,17 +99,17 @@ export default class MockDB {
   public async getItem(table: string, id: string, fields?: string[] | null) {
     await doQueryDelay();
     let results = this.data[table];
-    if (!results) throw new Error('Table does not exist');
+    if (!results) return new Error('Table does not exist');
 
     const result = results.find((item) => item.id === id);
-    if (!result) throw new Error(`Item with id '${id}' not found in table '${table}'`);
+    if (!result) return new Error(`Item with id '${id}' not found in table '${table}'`);
 
     return getFieldsOfItem(result, fields);
   }
 
   public async addItem(table: string, value: Record<string, any>) {
     await doQueryDelay();
-    if (!(table in this.data)) throw new Error('Table does not exist');
+    if (!(table in this.data)) return new Error('Table does not exist');
 
     const fullValue = {
       ...value,
@@ -127,13 +127,13 @@ export default class MockDB {
     await doQueryDelay();
 
     let results = this.data[table];
-    if (!results) throw new Error('Table does not exist');
+    if (!results) return new Error('Table does not exist');
 
-    if (!('id' in value)) throw new Error('Cannot update value without id');
+    if (!('id' in value)) return new Error('Cannot update value without id');
 
     const resultIndex = results.findIndex((item) => item.id === value.id);
     if (resultIndex === -1)
-      throw new Error(`Item with id '${value.id}' not found in table '${table}'`);
+      return new Error(`Item with id '${value.id}' not found in table '${table}'`);
 
     results.splice(resultIndex, 1, value);
 
@@ -146,10 +146,10 @@ export default class MockDB {
     await doQueryDelay();
 
     let results = this.data[table];
-    if (!results) throw new Error('Table does not exist');
+    if (!results) return new Error('Table does not exist');
 
     const resultIndex = results.findIndex((item) => item.id === id);
-    if (resultIndex === -1) throw new Error(`Item with id '${id}' not found in table '${table}'`);
+    if (resultIndex === -1) return new Error(`Item with id '${id}' not found in table '${table}'`);
 
     results.splice(resultIndex, 1);
 
