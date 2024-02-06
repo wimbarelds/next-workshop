@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/Header';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -27,7 +24,7 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body className={inter.className + `bg-gray-800 text-white`}>
+      <body className="bg-gray-800 text-white">
         <div className="flex flex-col min-h-screen mw bg-gray-900">
           <Header />
           <main className="container mx-auto flex-1 p-4">{children}</main>
