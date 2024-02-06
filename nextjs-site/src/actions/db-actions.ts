@@ -5,6 +5,19 @@ import { BlogPost, Comment, FullBlogPost, FullPenPost, PenPost, WikiPage } from 
 
 const dbPromise = MockDB.connect('localhost', 'admin', 'Hunter2');
 
+export async function getIds(type: 'blog' | 'pen' | 'wiki') {
+  const db = await dbPromise;
+  if (db instanceof Error) throw db;
+
+  const table = type;
+  const filter: Record<string, any> = {};
+  const columns = ['id'];
+
+  const result = await db.getList(table, filter, columns);
+  if (result instanceof Error) throw result;
+  return result.map((item) => item.id as string);
+}
+
 export async function getPosts(type: 'blog'): Promise<BlogPost[]>;
 export async function getPosts(type: 'pen'): Promise<PenPost[]>;
 export async function getPosts(type: 'blog' | 'pen') {

@@ -3,7 +3,7 @@ import remarkGfm from 'remark-gfm';
 import type { FullPenPost } from 'types';
 import { Metadata } from 'next';
 import { CommentArea } from '@/components/CommentArea';
-import { getPost } from '@/actions/db-actions';
+import { getIds, getPost } from '@/actions/db-actions';
 
 function getDate(dateStr: string) {
   const date = new Date(Date.parse(dateStr));
@@ -12,6 +12,11 @@ function getDate(dateStr: string) {
 
 function getPenDate(post: FullPenPost) {
   return post && getDate(post.date);
+}
+
+export async function generateStaticParams() {
+  const ids = await getIds('pen');
+  return ids.map((id) => ({ id }));
 }
 
 export async function generateMetadata({

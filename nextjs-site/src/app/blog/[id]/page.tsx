@@ -4,7 +4,7 @@ import type { FullBlogPost } from 'types';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CommentArea } from '@/components/CommentArea';
-import { getPost } from '@/actions/db-actions';
+import { getIds, getPost } from '@/actions/db-actions';
 
 function getDate(dateStr: string) {
   const date = new Date(Date.parse(dateStr));
@@ -13,6 +13,11 @@ function getDate(dateStr: string) {
 
 function getPostDate(post: FullBlogPost) {
   return post && getDate(post.date);
+}
+
+export async function generateStaticParams() {
+  const ids = await getIds('blog');
+  return ids.map((id) => ({ id }));
 }
 
 export async function generateMetadata({

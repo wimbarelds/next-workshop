@@ -1,4 +1,4 @@
-import { getWiki } from '@/actions/db-actions';
+import { getIds, getWiki } from '@/actions/db-actions';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import ReactMarkdown, { Components } from 'react-markdown';
@@ -13,6 +13,11 @@ const components: Components = {
     );
   },
 };
+
+export async function generateStaticParams() {
+  const ids = await getIds('wiki');
+  return ids.map((slug) => ({ slug: [slug] }));
+}
 
 export async function generateMetadata({
   params: { slug },
