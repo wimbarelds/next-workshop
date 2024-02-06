@@ -20,10 +20,10 @@ const baseUrl = `http://localhost:1234/wiki`;
 export async function generateMetadata({
   params: { slug },
 }: {
-  params: { slug: string };
+  params: { slug: string[] };
 }): Promise<Metadata> {
-  const content: WikiPage = await fetch(slug ? `${baseUrl}/${slug}` : baseUrl).then((response) =>
-    response.json(),
+  const content: WikiPage = await fetch(slug?.[0] ? `${baseUrl}/${slug[0]}` : baseUrl).then(
+    (response) => response.json(),
   );
 
   const title = content.slug
@@ -36,9 +36,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params: { slug } }: { params: { slug: string } }) {
-  const content: WikiPage = await fetch(slug ? `${baseUrl}/${slug}` : baseUrl).then((response) =>
-    response.json(),
+export default async function Page({ params: { slug } }: { params: { slug: string[] } }) {
+  const content: WikiPage = await fetch(slug?.[0] ? `${baseUrl}/${slug[0]}` : baseUrl).then(
+    (response) => response.json(),
   );
 
   if (!content) return <div className="text-center">No post found.</div>;
