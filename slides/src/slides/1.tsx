@@ -1,3 +1,10 @@
+import { MarkDown } from '../components/Markdown';
+import content from '../snippets/slide1.md?raw';
+
 export function Slide1() {
-  return <p className="mb-12 text-5xl font-bold text-center">Who am I?</p>
+  return (
+    <>
+      <MarkDown content={content} />
+    </>
+  );
 }

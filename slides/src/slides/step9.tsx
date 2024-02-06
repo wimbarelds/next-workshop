@@ -1,7 +1,10 @@
+import { MarkDown } from '../components/Markdown';
+import content from '../snippets/step9.md?raw';
+
 export function Step9() {
   return (
-    <div className="prose prose-invert prose-2xl">
-      <h1>Middleware</h1>
-    </div>
+    <>
+      <MarkDown content={content} />
+    </>
   );
 }
