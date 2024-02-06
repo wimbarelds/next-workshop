@@ -1,7 +1,10 @@
+import { MarkDown } from '../components/Markdown';
+import content from '../snippets/slide7.md?raw';
+
 export function Slide7() {
   return (
-    <div className="prose prose-invert prose-2xl">
-      <h1>Overview of rendering strategies</h1>
-    </div>
+    <>
+      <MarkDown content={content} />
+    </>
   );
 }
