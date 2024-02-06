@@ -17,6 +17,7 @@ But what are server components and client components?
 - (async) data is fetched on the client (in the browser)
 - Cannot use a server component in it's JSX
 - Can be passed props that are generated on the server (data but also jsx)
+- _Are actually rendered on the server_, but only the initial state.
 
 ## A server component:
 
