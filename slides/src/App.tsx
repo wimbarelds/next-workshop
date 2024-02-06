@@ -16,6 +16,7 @@ import { Step5 } from './slides/step5';
 import { Step6 } from './slides/step6';
 import { Step7 } from './slides/step7';
 import { Step8 } from './slides/step8';
+import { Step9 } from './slides/step9';
 import { Toggle } from './components/Toggle';
 
 const slides = [
@@ -36,6 +37,7 @@ const slides = [
   Step6,
   Step7,
   Step8,
+  Step9,
 ];
 
 function App() {
