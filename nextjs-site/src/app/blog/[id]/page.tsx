@@ -4,6 +4,7 @@ import type { FullBlogPost } from 'types';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CommentArea } from '@/components/CommentArea';
+import { getPost } from '@/actions/db-actions';
 
 function getDate(dateStr: string) {
   const date = new Date(Date.parse(dateStr));
@@ -19,18 +20,14 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const post: FullBlogPost = await fetch(`http://localhost:1234/blog/${id}`).then((response) =>
-    response.json(),
-  );
+  const post = await getPost('blog', id);
   return {
     title: `Pentastic! - ${post.title}`,
   };
 }
 
 export default async function Page({ params: { id } }: { params: { id: string } }) {
-  const post: FullBlogPost = await fetch(`http://localhost:1234/blog/${id}`).then((response) =>
-    response.json(),
-  );
+  const post = await getPost('blog', id);
 
   if (!post) return notFound();
 
@@ -69,7 +66,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
           </ReactMarkdown>
         </div>
       </div>
-      <CommentArea comments={post.comments} apiUrl={`http://localhost:1234/blog/${post.id}`} />
+      <CommentArea comments={post.comments} type="blog" id={post.id} />
     </div>
   );
 }

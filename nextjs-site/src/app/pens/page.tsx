@@ -1,15 +1,13 @@
+import { getPosts } from '@/actions/db-actions';
 import { PenTile } from '@/components/PenTile';
 import { Metadata } from 'next';
-import { PenPost } from 'types';
 
 export const metadata: Metadata = {
   title: `Pentastic! - Pens overview`,
 };
 
 export default async function Page() {
-  const pens: PenPost[] = await fetch('http://localhost:1234/pens/posts').then((response) =>
-    response.json(),
-  );
+  const pens = await getPosts('pen');
 
   return (
     <div className="container mx-auto px-4">

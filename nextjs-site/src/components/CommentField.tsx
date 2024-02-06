@@ -1,6 +1,11 @@
 import { useState, FormEvent } from 'react';
 
-export function CommentField({ posturl, onSent }: { posturl: string; onSent?: () => void }) {
+interface CommentFieldProps {
+  send: (name: string, comment: string) => Promise<any>;
+  onSent?: () => void;
+}
+
+export function CommentField({ send, onSent }: CommentFieldProps) {
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -10,14 +15,7 @@ export function CommentField({ posturl, onSent }: { posturl: string; onSent?: ()
     // This function will be called when the user submits the form
     // It will send the data to the API
     setIsSubmitting(true);
-    fetch(posturl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name,
-        comment,
-      }),
-    })
+    send(name, comment)
       .then(() => {
         // The request was successful
         // Clear the form fields

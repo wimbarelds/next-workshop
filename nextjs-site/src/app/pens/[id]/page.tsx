@@ -3,6 +3,7 @@ import remarkGfm from 'remark-gfm';
 import type { FullPenPost } from 'types';
 import { Metadata } from 'next';
 import { CommentArea } from '@/components/CommentArea';
+import { getPost } from '@/actions/db-actions';
 
 function getDate(dateStr: string) {
   const date = new Date(Date.parse(dateStr));
@@ -18,18 +19,14 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const post: FullPenPost = await fetch(`http://localhost:1234/pens/${id}`).then((response) =>
-    response.json(),
-  );
+  const post = await getPost('pen', id);
   return {
     title: `Pentastic! - ${post.title}`,
   };
 }
 
 export default async function Page({ params: { id } }: { params: { id: string } }) {
-  const post: FullPenPost = await fetch(`http://localhost:1234/pens/${id}`).then((response) =>
-    response.json(),
-  );
+  const post = await getPost('pen', id);
 
   if (!post) return <div className="text-center">No post found.</div>;
 
@@ -84,7 +81,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
           </ReactMarkdown>
         </div>
       </div>
-      <CommentArea comments={post.comments} apiUrl={`http://localhost:1234/pens/${id}`} />
+      <CommentArea comments={post.comments} type="pen" id={post.id} />
     </div>
   );
 }

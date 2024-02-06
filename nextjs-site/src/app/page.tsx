@@ -1,3 +1,4 @@
+import { getPosts } from '@/actions/db-actions';
 import { PenTile } from '@/components/PenTile';
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -27,12 +28,8 @@ function randomItem<T extends unknown[]>(arr: T): T[number] {
 export default async function Home() {
   const ad = ads[Math.floor(Math.random() * ads.length)];
 
-  const posts: BlogPost[] = await fetch('http://localhost:1234/blog/posts').then((response) =>
-    response.json(),
-  );
-  const pen: PenPost = await fetch('http://localhost:1234/pens/posts')
-    .then((response) => response.json())
-    .then((results) => randomItem(results));
+  const posts = await getPosts('blog');
+  const pen = await getPosts('pen').then((results) => randomItem(results));
 
   return (
     <div className="container mx-auto px-4">

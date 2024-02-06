@@ -1,9 +1,8 @@
+import { getWiki } from '@/actions/db-actions';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import ReactMarkdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-
-import type { WikiPage } from 'types';
 
 const components: Components = {
   a: function (props) {
@@ -15,17 +14,12 @@ const components: Components = {
   },
 };
 
-const baseUrl = `http://localhost:1234/wiki`;
-
 export async function generateMetadata({
   params: { slug },
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const content: WikiPage = await fetch(slug ? `${baseUrl}/${slug}` : baseUrl).then((response) =>
-    response.json(),
-  );
-
+  const content = await getWiki(slug);
   const title = content.slug
     .split('-')
     .map((word, index) => (index > 0 ? word : word[0].toUpperCase() + word.slice(1)))
@@ -37,9 +31,7 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params: { slug } }: { params: { slug: string } }) {
-  const content: WikiPage = await fetch(slug ? `${baseUrl}/${slug}` : baseUrl).then((response) =>
-    response.json(),
-  );
+  const content = await getWiki(slug);
 
   if (!content) return <div className="text-center">No post found.</div>;
 

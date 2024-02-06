@@ -7,9 +7,12 @@ import { CommentField } from '@/components/CommentField';
 import { useState } from 'react';
 import { Comment } from 'types';
 
+import { postComment } from '@/actions/db-actions';
+
 interface CommentAreaProps {
   comments: Comment[];
-  apiUrl: string;
+  type: 'blog' | 'pen';
+  id: string;
 }
 
 function getDate(dateStr: string) {
@@ -17,7 +20,7 @@ function getDate(dateStr: string) {
   return new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
 }
 
-export function CommentArea({ apiUrl, comments }: CommentAreaProps) {
+export function CommentArea({ type, id, comments }: CommentAreaProps) {
   const [showInput, setShowInput] = useState(false);
 
   return (
@@ -39,7 +42,7 @@ export function CommentArea({ apiUrl, comments }: CommentAreaProps) {
       </h2>
       {showInput && (
         <CommentField
-          posturl={apiUrl}
+          send={(name, comment) => postComment(type, id, { name, comment })}
           onSent={() => {
             location.reload();
           }}
