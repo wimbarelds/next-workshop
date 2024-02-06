@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { Slide1 } from './slides/1';
 import { Slide2 } from './slides/2';
 import { Slide3 } from './slides/3';
@@ -15,6 +15,7 @@ import { Step4 } from './slides/step4';
 import { Step5 } from './slides/step5';
 import { Step6 } from './slides/step6';
 import { Step7 } from './slides/step7';
+import { Toggle } from './components/Toggle';
 
 const slides = [
   Slide1,
@@ -32,23 +33,25 @@ const slides = [
   Step4,
   Step5,
   Step6,
-  Step7
+  Step7,
 ];
 
 function App() {
   const [slide, setSlide] = useState(0);
-
-  const nextSlide = useCallback(
-    () => setSlide((cur) => Math.min(cur + 1, slides.length - 1)),
-    []
-  );
-  const prevSlide = useCallback(
-    () => setSlide((cur) => Math.max(cur - 1, 0)),
-    []
-  );
+  const [navEnabled, setNavEnabled] = useState(true);
 
   useEffect(() => {
+    if (navEnabled) document.documentElement.classList.add('select-none');
+    else document.documentElement.classList.remove('select-none');
+  }, [navEnabled]);
+
+  useEffect(() => {
+    const nextSlide = () => setSlide((cur) => Math.min(cur + 1, slides.length - 1));
+    const prevSlide = () => setSlide((cur) => Math.max(cur - 1, 0));
+
     function onClick(event: MouseEvent) {
+      if (!navEnabled) return;
+      if (event.target instanceof HTMLAnchorElement) return;
       event.preventDefault();
 
       if (event.button === 0 && !event.shiftKey) nextSlide();
@@ -61,12 +64,17 @@ function App() {
     return () => {
       window.removeEventListener('click', onClick);
       window.removeEventListener('contextmenu', onClick);
-    }
-  }, []);
+    };
+  }, [navEnabled]);
 
   const Slide = slides[slide];
 
-  return <Slide />
+  return (
+    <>
+      <Toggle value={navEnabled} setValue={setNavEnabled} className="absolute top-4 right-4" />
+      <Slide />
+    </>
+  );
 }
 
-export default App
+export default App;

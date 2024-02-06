@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { PenTile } from '../../components/pen-tile';
 import { PenPost } from 'types';
 
-export function PenOverview() {
+export default function PenOverview() {
   const [pens, setPens] = useState<PenPost[]>([]);
   const [loading, setLoading] = useState(false);
 

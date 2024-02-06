@@ -1,7 +1,6 @@
+import { MarkDown } from '../components/Markdown';
+import content from '../snippets/step1.md?raw';
+
 export function Step1() {
-  return (
-    <div className="prose prose-invert prose-2xl">
-      <h1>Router, Layouts, Pages</h1>
-    </div>
-  );
+  return <MarkDown content={content} />;
 }

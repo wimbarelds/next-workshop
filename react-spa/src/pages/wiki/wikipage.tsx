@@ -18,7 +18,7 @@ const components: Components = {
 
 const baseUrl = `http://localhost:1234/wiki`;
 
-export function WikiPage() {
+export default function WikiPage() {
   const [content, setContent] = useState<WikiPage | null>(null);
   const [loading, setLoading] = useState(false);
   const { slug } = useParams<{ slug: string }>();

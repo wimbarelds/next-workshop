@@ -14,7 +14,7 @@ function getPostDate(post: FullBlogPost) {
   return post && getDate(post.date);
 }
 
-export function BlogPage() {
+export default function BlogPage() {
   const [post, setPost] = useState<FullBlogPost | null>(null);
   const [loading, setLoading] = useState(false);
   const [showInput, setShowInput] = useState(false);

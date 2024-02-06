@@ -1,6 +1,6 @@
 import { useState, FormEvent, useEffect } from 'react';
 
-export function ContactPage() {
+export default function ContactPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');

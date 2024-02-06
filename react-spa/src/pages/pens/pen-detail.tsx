@@ -14,7 +14,7 @@ function getPenDate(post: FullPenPost) {
   return post && getDate(post.date);
 }
 
-export function PenDetail() {
+export default function PenDetail() {
   const [post, setPost] = useState<FullPenPost | null>(null);
   const [loading, setLoading] = useState(false);
   const [showInput, setShowInput] = useState(false);

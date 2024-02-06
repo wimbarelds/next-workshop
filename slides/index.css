@@ -9,3 +9,14 @@
     @apply w-full max-w-screen-xl mx-auto;
   }
 }
+
+html {
+  overflow: hidden;
+}
+
+body {
+  overflow: auto;
+  display: flex;
+  align-items: safe center;
+  justify-content: safe center;
+}

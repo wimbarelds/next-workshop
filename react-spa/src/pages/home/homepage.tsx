@@ -16,7 +16,7 @@ const ads = [
   { text: 'Best disposable helicopters?', img: 'ad-disposable-helicopter.png' },
 ];
 
-export function HomePage() {
+export default function HomePage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [pen, setPen] = useState<PenPost | null>(null);
   const [loading, setLoading] = useState(false);
