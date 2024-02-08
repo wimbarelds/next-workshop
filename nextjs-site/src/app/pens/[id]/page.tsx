@@ -1,41 +1,36 @@
-'use client';
-
-import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { FullPenPost } from 'types';
-import { CommentField } from '@/components/CommentField';
+import { Metadata } from 'next';
+import { CommentArea } from '@/components/CommentArea';
 
 function getDate(dateStr: string) {
   const date = new Date(Date.parse(dateStr));
-  return new Intl.DateTimeFormat(navigator.language, { dateStyle: 'long' }).format(date);
+  return new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(date);
 }
 
 function getPenDate(post: FullPenPost) {
   return post && getDate(post.date);
 }
 
-export default function Page({ params: { id } }: { params: { id: string } }) {
-  const [post, setPost] = useState<FullPenPost | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [showInput, setShowInput] = useState(false);
+export async function generateMetadata({
+  params: { id },
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const post: FullPenPost = await fetch(`http://localhost:1234/pens/${id}`).then((response) =>
+    response.json(),
+  );
+  return {
+    title: `Pentastic! - ${post.title}`,
+  };
+}
 
-  const loadContent = useCallback(() => {
-    setLoading(true);
-    fetch(`http://localhost:1234/pens/${id}`)
-      .then((response) => response.json())
-      .then((data: FullPenPost) => setPost(data))
-      .finally(() => setLoading(false));
-  }, [id]);
+export default async function Page({ params: { id } }: { params: { id: string } }) {
+  const post: FullPenPost = await fetch(`http://localhost:1234/pens/${id}`).then((response) =>
+    response.json(),
+  );
 
-  useEffect(() => {
-    if (post?.title) document.title = `Pentastic! - ${post.title}`;
-  }, [post]);
-
-  useEffect(loadContent, [loadContent]);
-
-  if (loading && !post) return <div className="text-center">Loading...</div>;
   if (!post) return <div className="text-center">No post found.</div>;
 
   return (
@@ -89,45 +84,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
           </ReactMarkdown>
         </div>
       </div>
-      <div className="prose lg:prose-2xl prose-invert ml-[200px] p-4 mt-8 prose-p:mt-2">
-        <h2 className="flex justify-between items-center">
-          Comments
-          {!showInput && (
-            <button
-              type="button"
-              className="bg-gradient-to-br from-blue-600 to-purple-700 p-0.5 rounded-xl group"
-              onClick={() => setShowInput(true)}
-            >
-              <div className="px-3 py-0.5 rounded-lg text-sm font-bold overflow-hidden relative isolate bg-gradient-to-br from-blue-900 to-purple-950">
-                <div className="bg-gray-900 absolute inset-0 -z-10 transition-all group-hover:opacity-50 group-hover:translate-y-full"></div>
-                Write comment
-              </div>
-            </button>
-          )}
-        </h2>
-        {showInput && (
-          <CommentField
-            posturl={`http://localhost:1234/pens/${post.id}`}
-            onSent={() => {
-              loadContent();
-              setShowInput(false);
-            }}
-          />
-        )}
-        <div className="">
-          {post.comments.map((comment) => (
-            <div key={comment.author + comment.date}>
-              <div className="flex justify-between items-center">
-                <span className="text-3xl font-bold text-white">{comment.author}</span>
-                <span className="text-gray-400">{getDate(comment.date)}</span>
-              </div>
-              <div className="">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{comment.message}</ReactMarkdown>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <CommentArea comments={post.comments} apiUrl={`http://localhost:1234/pens/${id}`} />
     </div>
   );
 }
