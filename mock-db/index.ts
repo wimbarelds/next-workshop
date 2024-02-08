@@ -1,6 +1,7 @@
 import { createHash } from './util/createHash.ts';
 import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import axios from 'axios';
 
 type Data = Record<string, Array<Record<string, any>>>;
@@ -18,10 +19,15 @@ function getFieldsOfItem(item: Record<string, any>, fields?: string[] | null) {
 }
 
 function getRootDir() {
-  if (import.meta.dirname.includes('nextjs-site')) {
-    return resolve(process.cwd(), '../mock-db');
+  if (import.meta.dirname) {
+    if (import.meta.dirname?.includes('nextjs-site')) {
+      return resolve(process.cwd(), '../mock-db');
+    }
+    return import.meta.dirname;
   }
-  return import.meta.dirname;
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  return __dirname
 }
 
 export default class MockDB {
